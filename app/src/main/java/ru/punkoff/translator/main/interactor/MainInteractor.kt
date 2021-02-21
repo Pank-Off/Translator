@@ -1,4 +1,4 @@
-package ru.punkoff.translator.main.presenter
+package ru.punkoff.translator.main.interactor
 
 import io.reactivex.Observable
 
