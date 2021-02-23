@@ -6,9 +6,8 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import ru.punkoff.translator.main.interactor.MainInteractorImpl
 import ru.punkoff.translator.main.model.data.AppState
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val interactor: MainInteractorImpl) :
+class MainViewModel(private val interactor: MainInteractorImpl) :
     BaseViewModel<AppState>() {
     override fun getData(word: String, isOnline: Boolean) {
         compositeDisposable.add(
