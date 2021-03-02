@@ -1,42 +1,34 @@
 package ru.punkoff.translator.main.viewmodel
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.punkoff.translator.main.interactor.MainInteractorImpl
 import ru.punkoff.translator.main.model.data.AppState
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val interactor: MainInteractorImpl) :
+class MainViewModel(private val interactor: MainInteractorImpl) :
     BaseViewModel<AppState>() {
     override fun getData(word: String, isOnline: Boolean) {
-        compositeDisposable.add(
-            interactor.getData(word, isOnline)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(doOnSubscribe())
-                .subscribeWith(getObserver())
-        )
+        liveDataForViewToObserve.value = AppState.Loading(null)
+        cancelJob()
+        viewModelCoroutineScope.launch {
+            stareInteractor(word, isOnline)
+        }
     }
 
-    fun subscribe() = liveDataForViewToObserve
-    private fun doOnSubscribe(): (Disposable) -> Unit =
-        { liveDataForViewToObserve.value = AppState.Loading(null) }
-
-    private fun getObserver(): DisposableObserver<AppState> {
-        return object : DisposableObserver<AppState>() {
-
-            override fun onNext(state: AppState) {
-                liveDataForViewToObserve.value = state
-            }
-
-            override fun onError(e: Throwable) {
-                liveDataForViewToObserve.value = AppState.Error(e)
-            }
-
-            override fun onComplete() {
-            }
+    private suspend fun stareInteractor(word: String, isOnline: Boolean) =
+        withContext(Dispatchers.IO) {
+            liveDataForViewToObserve.postValue(interactor.getData(word, isOnline))
         }
+
+    fun subscribe() = liveDataForViewToObserve
+
+    override fun handleError(error: Throwable) {
+        liveDataForViewToObserve.postValue(AppState.Error(error))
+    }
+
+    override fun onCleared() {
+        liveDataForViewToObserve.value = AppState.Success(null)
+        super.onCleared()
     }
 }

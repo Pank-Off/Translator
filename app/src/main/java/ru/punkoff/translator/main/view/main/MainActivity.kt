@@ -3,10 +3,9 @@ package ru.punkoff.translator.main.view.main
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.punkoff.translator.R
 import ru.punkoff.translator.main.model.data.AppState
 import ru.punkoff.translator.main.model.data.DataModel
@@ -16,13 +15,10 @@ import ru.punkoff.translator.main.view.main.adapter.OnItemClickListener
 import ru.punkoff.translator.main.view.main.searchDialog.OnSearchClickListener
 import ru.punkoff.translator.main.view.main.searchDialog.SearchDialogFragment
 import ru.punkoff.translator.main.viewmodel.MainViewModel
-import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState>() {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel by viewModel<MainViewModel>()
     private var adapter: MainAdapter? = null
     private val onItemClickListener = object : OnItemClickListener {
         override fun onItemClick(data: DataModel) {
@@ -30,13 +26,9 @@ class MainActivity : BaseActivity<AppState>() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainViewModel = viewModelFactory.create(MainViewModel::class.java)
         search_fab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object : OnSearchClickListener {
