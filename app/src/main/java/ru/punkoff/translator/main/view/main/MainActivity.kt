@@ -2,14 +2,15 @@ package ru.punkoff.translator.main.view.main
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.punkoff.translator.R
 import ru.punkoff.translator.main.model.data.AppState
 import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.translator.main.utils.convertMeaningsToString
 import ru.punkoff.translator.main.view.base.BaseActivity
+import ru.punkoff.translator.main.view.descriptionscreen.DescriptionActivity
 import ru.punkoff.translator.main.view.main.adapter.MainAdapter
 import ru.punkoff.translator.main.view.main.adapter.OnItemClickListener
 import ru.punkoff.translator.main.view.main.searchDialog.OnSearchClickListener
@@ -22,7 +23,12 @@ class MainActivity : BaseActivity<AppState>() {
     private var adapter: MainAdapter? = null
     private val onItemClickListener = object : OnItemClickListener {
         override fun onItemClick(data: DataModel) {
-            Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+            startActivity(
+                DescriptionActivity.getIntent(
+                    this@MainActivity, data.text,
+                    convertMeaningsToString(data.meanings), data.meanings?.get(0)?.imageUrl
+                )
+            )
         }
     }
 
