@@ -2,10 +2,10 @@ package geekbrains.ru.translator.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.punkoff.translator.main.model.data.AppState
+import ru.punkoff.model.AppState
 import kotlinx.coroutines.*
 
-abstract class BaseViewModel<T : AppState>(
+abstract class BaseViewModel<T : ru.punkoff.model.AppState>(
     protected open val _mutableLiveData: MutableLiveData<T> = MutableLiveData()
 ) : ViewModel() {
 

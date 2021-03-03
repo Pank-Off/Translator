@@ -1,8 +1,8 @@
 package ru.punkoff.translator.main.model.datasource
 
-import ru.punkoff.translator.main.model.data.AppState
+import ru.punkoff.model.AppState
 
 interface DataSourceLocal<T> : DataSource<T> {
 
-    suspend fun saveToDB(appState: AppState)
+    suspend fun saveToDB(appState: ru.punkoff.model.AppState)
 }

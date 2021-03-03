@@ -1,4 +1,4 @@
-package ru.punkoff.translator.main.model.data
+package ru.punkoff.model
 
 sealed class AppState {
     data class Success(val data: List<DataModel>?) : AppState()

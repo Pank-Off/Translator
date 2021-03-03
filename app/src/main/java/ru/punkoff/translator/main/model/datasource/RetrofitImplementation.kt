@@ -1,7 +1,7 @@
 package ru.punkoff.translator.main.model.datasource
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.model.DataModel
 import ru.punkoff.translator.main.model.data.api.ApiService
 import ru.punkoff.translator.main.model.data.api.BaseInterceptor
 import okhttp3.Interceptor

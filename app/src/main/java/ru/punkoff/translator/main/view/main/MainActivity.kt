@@ -6,8 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
-import ru.punkoff.translator.main.model.data.AppState
-import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.model.AppState
+import ru.punkoff.model.DataModel
 import ru.punkoff.translator.main.utils.convertMeaningsToString
 import ru.punkoff.translator.main.utils.network.isOnline
 import ru.punkoff.translator.main.view.base.BaseActivity
@@ -20,7 +20,7 @@ import ru.punkoff.translator.R
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
-class MainActivity : BaseActivity<AppState, MainInteractor>() {
+class MainActivity : BaseActivity<ru.punkoff.model.AppState, MainInteractor>() {
     override lateinit var model: MainViewModel
 
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
@@ -32,13 +32,13 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: DataModel) {
+            override fun onItemClick(data: ru.punkoff.model.DataModel) {
                 startActivity(
                     DescriptionActivity.getIntent(
                         this@MainActivity,
                         data.text!!,
                         convertMeaningsToString(data.meanings!!),
-                        data.meanings[0].imageUrl
+                        data.meanings!![0].imageUrl
                     )
                 )
             }
@@ -62,7 +62,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         initViews()
     }
 
-    override fun setDataToAdapter(data: List<DataModel>) {
+    override fun setDataToAdapter(data: List<ru.punkoff.model.DataModel>) {
         adapter.setData(data)
     }
 
@@ -87,7 +87,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
         val viewModel: MainViewModel by viewModel()
         model = viewModel
-        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+        model.subscribe().observe(this@MainActivity, Observer<ru.punkoff.model.AppState> { renderData(it) })
     }
 
     private fun initViews() {
