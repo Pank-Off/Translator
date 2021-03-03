@@ -1,7 +1,6 @@
 package ru.punkoff.translator.main.di
 
 import androidx.room.Room
-import ru.punkoff.translator.main.model.data.DataModel
 import ru.punkoff.translator.main.model.datasource.RetrofitImplementation
 import ru.punkoff.translator.main.model.datasource.RoomDataBaseImplementation
 import ru.punkoff.translator.main.model.repository.Repository
@@ -18,8 +17,8 @@ import org.koin.dsl.module
 val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
-    single<Repository<List<DataModel>>> { RepositoryImplementation(RetrofitImplementation()) }
-    single<RepositoryLocal<List<DataModel>>> { RepositoryImplementationLocal(
+    single<Repository<List<ru.punkoff.model.DataModel>>> { RepositoryImplementation(RetrofitImplementation()) }
+    single<RepositoryLocal<List<ru.punkoff.model.DataModel>>> { RepositoryImplementationLocal(
         RoomDataBaseImplementation(get())
     )
     }

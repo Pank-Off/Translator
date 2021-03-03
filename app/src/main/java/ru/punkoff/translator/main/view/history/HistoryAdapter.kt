@@ -5,15 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.model.DataModel
 import kotlinx.android.synthetic.main.activity_history_recyclerview_item.view.*
 import ru.punkoff.translator.R
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
 
-    private var data: List<DataModel> = arrayListOf()
+    private var data: List<ru.punkoff.model.DataModel> = arrayListOf()
 
-    fun setData(data: List<DataModel>) {
+    fun setData(data: List<ru.punkoff.model.DataModel>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -35,7 +35,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
 
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(data: DataModel) {
+        fun bind(data: ru.punkoff.model.DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.header_history_textview_recycler_item.text = data.text
                 itemView.setOnClickListener {

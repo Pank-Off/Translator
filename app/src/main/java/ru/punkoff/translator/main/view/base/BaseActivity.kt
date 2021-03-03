@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import ru.punkoff.translator.main.model.data.AppState
-import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.model.AppState
+import ru.punkoff.model.DataModel
 import ru.punkoff.translator.main.utils.network.isOnline
 import ru.punkoff.translator.main.utils.ui.AlertDialogFragment
 import geekbrains.ru.translator.viewmodel.BaseViewModel
@@ -53,7 +53,7 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
                 if (appState.progress != null) {
                     progress_bar_horizontal.visibility = View.VISIBLE
                     progress_bar_round.visibility = View.GONE
-                    progress_bar_horizontal.progress = appState.progress
+                    progress_bar_horizontal.progress = appState.progress!!
                 } else {
                     progress_bar_horizontal.visibility = View.GONE
                     progress_bar_round.visibility = View.VISIBLE
@@ -89,5 +89,5 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
         return supportFragmentManager.findFragmentByTag(DIALOG_FRAGMENT_TAG) == null
     }
 
-    abstract fun setDataToAdapter(data: List<DataModel>)
+    abstract fun setDataToAdapter(data: List<ru.punkoff.model.DataModel>)
 }

@@ -1,7 +1,7 @@
 package ru.punkoff.translator.main.view.main
 
 import androidx.lifecycle.LiveData
-import ru.punkoff.translator.main.model.data.AppState
+import ru.punkoff.model.AppState
 import ru.punkoff.translator.main.utils.parseOnlineSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -9,16 +9,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel(private val interactor: MainInteractor) :
-    BaseViewModel<AppState>() {
+    BaseViewModel<ru.punkoff.model.AppState>() {
 
-    private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
+    private val liveDataForViewToObserve: LiveData<ru.punkoff.model.AppState> = _mutableLiveData
 
-    fun subscribe(): LiveData<AppState> {
+    fun subscribe(): LiveData<ru.punkoff.model.AppState> {
         return _mutableLiveData
     }
 
     override fun getData(word: String, isOnline: Boolean) {
-        _mutableLiveData.value = AppState.Loading(null)
+        _mutableLiveData.value = ru.punkoff.model.AppState.Loading(null)
         cancelJob()
         viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
     }
@@ -29,11 +29,11 @@ class MainViewModel(private val interactor: MainInteractor) :
     }
 
     override fun handleError(error: Throwable) {
-        _mutableLiveData.postValue(AppState.Error(error))
+        _mutableLiveData.postValue(ru.punkoff.model.AppState.Error(error))
     }
 
     override fun onCleared() {
-        _mutableLiveData.value = AppState.Success(null)//TODO Workaround. Set View to original state
+        _mutableLiveData.value = ru.punkoff.model.AppState.Success(null)//TODO Workaround. Set View to original state
         super.onCleared()
     }
 }

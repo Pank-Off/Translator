@@ -1,25 +1,25 @@
 package ru.punkoff.translator.main.utils
 
-import ru.punkoff.translator.main.model.data.AppState
-import ru.punkoff.translator.main.model.data.Meanings
-import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.model.AppState
+import ru.punkoff.model.Meanings
+import ru.punkoff.model.DataModel
 import ru.punkoff.translator.main.room.HistoryEntity
 
-fun parseOnlineSearchResults(state: AppState): AppState {
-    return AppState.Success(mapResult(state, true))
+fun parseOnlineSearchResults(state: ru.punkoff.model.AppState): ru.punkoff.model.AppState {
+    return ru.punkoff.model.AppState.Success(mapResult(state, true))
 }
 
-fun parseLocalSearchResults(data: AppState): AppState {
-    return AppState.Success(mapResult(data, false))
+fun parseLocalSearchResults(data: ru.punkoff.model.AppState): ru.punkoff.model.AppState {
+    return ru.punkoff.model.AppState.Success(mapResult(data, false))
 }
 
 private fun mapResult(
-    data: AppState,
+    data: ru.punkoff.model.AppState,
     isOnline: Boolean
-): List<DataModel> {
-    val newSearchResults = arrayListOf<DataModel>()
+): List<ru.punkoff.model.DataModel> {
+    val newSearchResults = arrayListOf<ru.punkoff.model.DataModel>()
     when (data) {
-        is AppState.Success -> {
+        is ru.punkoff.model.AppState.Success -> {
             getSuccessResultData(data, isOnline, newSearchResults)
         }
     }
@@ -27,11 +27,11 @@ private fun mapResult(
 }
 
 private fun getSuccessResultData(
-    data: AppState.Success,
+    data: ru.punkoff.model.AppState.Success,
     isOnline: Boolean,
-    newDataModels: ArrayList<DataModel>
+    newDataModels: ArrayList<ru.punkoff.model.DataModel>
 ) {
-    val dataModels: List<DataModel> = data.data as List<DataModel>
+    val dataModels: List<ru.punkoff.model.DataModel> = data.data as List<ru.punkoff.model.DataModel>
     if (dataModels.isNotEmpty()) {
         if (isOnline) {
             for (searchResult in dataModels) {
@@ -39,39 +39,39 @@ private fun getSuccessResultData(
             }
         } else {
             for (searchResult in dataModels) {
-                newDataModels.add(DataModel(searchResult.text, arrayListOf()))
+                newDataModels.add(ru.punkoff.model.DataModel(searchResult.text, arrayListOf()))
             }
         }
     }
 }
 
-private fun parseOnlineResult(dataModel: DataModel, newDataModels: ArrayList<DataModel>) {
+private fun parseOnlineResult(dataModel: ru.punkoff.model.DataModel, newDataModels: ArrayList<ru.punkoff.model.DataModel>) {
     if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
-        val newMeanings = arrayListOf<Meanings>()
-        for (meaning in dataModel.meanings) {
-            if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+        val newMeanings = arrayListOf<ru.punkoff.model.Meanings>()
+        for (meaning in dataModel.meanings!!) {
+            if (meaning.translation != null && !meaning.translation!!.translation.isNullOrBlank()) {
+                newMeanings.add(ru.punkoff.model.Meanings(meaning.translation, meaning.imageUrl))
             }
         }
         if (newMeanings.isNotEmpty()) {
-            newDataModels.add(DataModel(dataModel.text, newMeanings))
+            newDataModels.add(ru.punkoff.model.DataModel(dataModel.text, newMeanings))
         }
     }
 }
 
-fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
-    val searchResult = ArrayList<DataModel>()
+fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<ru.punkoff.model.DataModel> {
+    val searchResult = ArrayList<ru.punkoff.model.DataModel>()
     if (!list.isNullOrEmpty()) {
         for (entity in list) {
-            searchResult.add(DataModel(entity.word, null))
+            searchResult.add(ru.punkoff.model.DataModel(entity.word, null))
         }
     }
     return searchResult
 }
 
-fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
+fun convertDataModelSuccessToEntity(appState: ru.punkoff.model.AppState): HistoryEntity? {
     return when (appState) {
-        is AppState.Success -> {
+        is ru.punkoff.model.AppState.Success -> {
             val searchResult = appState.data
             if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
                 null
@@ -84,7 +84,7 @@ fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
 }
 
 
-fun convertMeaningsToString(meanings: List<Meanings>): String {
+fun convertMeaningsToString(meanings: List<ru.punkoff.model.Meanings>): String {
     var meaningsSeparatedByComma = String()
     for ((index, meaning) in meanings.withIndex()) {
         meaningsSeparatedByComma += if (index + 1 != meanings.size) {

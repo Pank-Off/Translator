@@ -1,4 +1,4 @@
-package ru.punkoff.translator.main.model.data
+package ru.punkoff.model
 
 import com.google.gson.annotations.SerializedName
 

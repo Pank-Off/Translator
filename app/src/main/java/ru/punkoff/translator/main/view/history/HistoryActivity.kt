@@ -2,14 +2,14 @@ package ru.punkoff.translator.main.view.history
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import ru.punkoff.translator.main.model.data.AppState
-import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.model.AppState
+import ru.punkoff.model.DataModel
 import ru.punkoff.translator.main.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_history.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.punkoff.translator.R
 
-class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
+class HistoryActivity : BaseActivity<ru.punkoff.model.AppState, HistoryInteractor>() {
 
     override lateinit var model: HistoryViewModel
     private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
@@ -26,7 +26,7 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
         model.getData("", false)
     }
 
-    override fun setDataToAdapter(data: List<DataModel>) {
+    override fun setDataToAdapter(data: List<ru.punkoff.model.DataModel>) {
         adapter.setData(data)
     }
 
@@ -36,7 +36,7 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
         }
         val viewModel: HistoryViewModel by viewModel()
         model = viewModel
-        model.subscribe().observe(this@HistoryActivity, Observer<AppState> { renderData(it) })
+        model.subscribe().observe(this@HistoryActivity, Observer<ru.punkoff.model.AppState> { renderData(it) })
     }
 
     private fun initViews() {
