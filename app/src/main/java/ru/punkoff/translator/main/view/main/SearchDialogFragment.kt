@@ -1,4 +1,4 @@
-package ru.punkoff.translator.main.view.main.searchDialog
+package ru.punkoff.translator.main.view.main
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,9 +6,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
+import ru.punkoff.translator.main.utils.getEmptyString
 import kotlinx.android.synthetic.main.search_dialog_fragment.*
 import ru.punkoff.translator.R
 
@@ -21,8 +23,7 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     private val textWatcher = object : TextWatcher {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            searchButton.isEnabled =
-                searchEditText.text != null && searchEditText.text.toString().isNotEmpty()
+            searchButton.isEnabled = searchEditText.text != null && searchEditText.text.toString().isNotEmpty()
         }
 
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -40,11 +41,7 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
         onSearchClickListener = listener
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_dialog_fragment, container, false)
     }
 
@@ -52,14 +49,19 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         searchEditText = search_edit_text
         searchButton = search_button_textview
+
         searchButton.setOnClickListener(onSearchButtonClickListener)
         searchEditText.addTextChangedListener(textWatcher)
-
     }
 
     override fun onDestroyView() {
         onSearchClickListener = null
         super.onDestroyView()
+    }
+
+    interface OnSearchClickListener {
+
+        fun onClick(searchWord: String)
     }
 
     companion object {

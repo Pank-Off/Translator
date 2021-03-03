@@ -1,18 +1,19 @@
 package ru.punkoff.translator.main.model.datasource
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-
+import ru.punkoff.translator.main.model.data.DataModel
+import ru.punkoff.translator.main.model.data.api.ApiService
+import ru.punkoff.translator.main.model.data.api.BaseInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.punkoff.translator.main.model.data.DataModel
 
 class RetrofitImplementation : DataSource<List<DataModel>> {
 
     override suspend fun getData(word: String): List<DataModel> {
-        return getService(BaseInterceptor.interceptor).search(word).await()
+        return getService(BaseInterceptor.interceptor).searchAsync(word).await()
     }
 
     private fun getService(interceptor: Interceptor): ApiService {
