@@ -36,6 +36,7 @@ class DescriptionActivity : AppCompatActivity() {
     }
 
     private fun setData() {
+
         val bundle = intent.extras
         description_header.text = bundle?.getString(WORD_EXTRA)
         description_textview.text = bundle?.getString(DESCRIPTION_EXTRA)
